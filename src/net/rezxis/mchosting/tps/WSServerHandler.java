@@ -10,6 +10,7 @@ import org.java_websocket.handshake.ClientHandshake;
 import com.google.gson.Gson;
 
 import net.rezxis.mchosting.database.Tables;
+import net.rezxis.mchosting.database.object.ServerWrapper;
 import net.rezxis.mchosting.database.object.server.DBThirdParty;
 import net.rezxis.mchosting.network.ServerHandler;
 import net.rezxis.mchosting.network.packet.sync.SyncThirdPartyPacket;
@@ -33,9 +34,10 @@ public class WSServerHandler implements ServerHandler {
 	public void onClose(WebSocket conn, int code, String reason, boolean remote) {
 		if (connections.containsKey(conn)) {
 			DBThirdParty dtp = Tables.getTTable().getByID(connections.get(conn));
-			dtp.setMax(-1);
-			dtp.setPlayers(-1);
+			dtp.setMax(0);
+			dtp.setPlayers(0);
 			dtp.setHost("");
+			dtp.setName("");
 			dtp.setPort(-1);
 			dtp.setOnline(false);
 			dtp.update();
@@ -69,7 +71,7 @@ public class WSServerHandler implements ServerHandler {
 				conn.send(gson.toJson(res));
 				return;
 			}
-			if (Tables.getSTable().existsWithName(tap.getName())) {
+			if (ServerWrapper.getServerByName(tap.getName()) != null) {
 				res = new TAuthServerResponse(-1, "A server same name is exists");
 				conn.send(gson.toJson(res));
 				return;
@@ -105,6 +107,7 @@ public class WSServerHandler implements ServerHandler {
 			dtp.setMax(0);
 			dtp.setPlayers(0);
 			dtp.setHost("");
+			dtp.setName("");
 			dtp.setPort(0);
 			dtp.setOnline(false);
 			dtp.update();
