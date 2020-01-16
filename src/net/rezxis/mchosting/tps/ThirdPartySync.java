@@ -6,8 +6,6 @@ import java.net.URI;
 
 import net.rezxis.mchosting.database.Database;
 import net.rezxis.mchosting.database.MySQLProvider;
-import net.rezxis.mchosting.database.tables.ServersTable;
-import net.rezxis.mchosting.database.tables.ThirdPartyTable;
 import net.rezxis.mchosting.network.WSClient;
 import net.rezxis.mchosting.network.WSServer;
 
