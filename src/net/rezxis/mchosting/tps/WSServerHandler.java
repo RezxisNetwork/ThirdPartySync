@@ -19,6 +19,7 @@ import net.rezxis.thirdParty.packet.TAuthServerPacket;
 import net.rezxis.thirdParty.packet.TAuthServerResponse;
 import net.rezxis.thirdParty.packet.TPacket;
 import net.rezxis.thirdParty.packet.TServerStoppedPacket;
+import net.rezxis.thirdParty.packet.TServerUpdatePacket;
 
 public class WSServerHandler implements ServerHandler {
 	
@@ -82,7 +83,7 @@ public class WSServerHandler implements ServerHandler {
 				return;
 			}
 			if (tap.getVersion() != ThirdPartySync.cver) {
-				res = new TAuthServerResponse(-1, "your thirdparty plugin is outdated");
+				res = new TAuthServerResponse(-1, "your thirdparty plugin is outdated, please update your thirdparty plugin.");
 				conn.send(gson.toJson(res));
 				return;
 			}
@@ -114,6 +115,20 @@ public class WSServerHandler implements ServerHandler {
 			//send to sync
 			ThirdPartySync.client.send(gson.toJson(new SyncThirdPartyPacket(dtp.getKey(), Action.STOP)));
 			connections.remove(conn);
+		} else if (packet.getId() == 4) {
+			TServerUpdatePacket tup = gson.fromJson(message, TServerUpdatePacket.class);
+			DBThirdParty dtp = Tables.getTTable().getByKey(tup.getToken());
+			if (dtp == null)
+				return;
+			if (ServerWrapper.getServerByName(tup.getName()) != null)
+				return;
+			if (tup.getName() != null)
+				dtp.setName(tup.getName());
+			if (tup.getMotd() != null)
+				dtp.setMotd(tup.getMotd());
+			if (tup.getIcon() != null)
+				dtp.setIcon(tup.getIcon());
+			dtp.update();
 		}
 	}
 

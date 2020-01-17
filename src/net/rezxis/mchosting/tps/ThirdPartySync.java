@@ -14,7 +14,7 @@ public class ThirdPartySync {
 	public static WSServer server;
 	public static WSClient client;
 	public static Props props;
-	public static double cver = 0.2;
+	public static double cver = 0.3;
 	
 	public static void main(String[] args) {
 		props = new Props("tps.propertis");
