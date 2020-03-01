@@ -77,6 +77,11 @@ public class WSServerHandler implements ServerHandler {
 				conn.send(gson.toJson(res));
 				return;
 			}
+			if (tap.getName().contains("lobby")) {
+				res = new TAuthServerResponse(-1, "That name doesn't allow");
+				conn.send(gson.toJson(res));
+				return;
+			}
 			if (dtp.getExpire().before(new Date())) {
 				res = new TAuthServerResponse(-1, "your thirdparty was expired");
 				conn.send(gson.toJson(res));
