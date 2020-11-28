@@ -92,6 +92,16 @@ public class WSServerHandler implements ServerHandler {
 				conn.send(gson.toJson(res));
 				return;
 			}
+			if (tap.getIcon().equalsIgnoreCase("air")) {
+				res = new TAuthServerResponse(-1, "that icon is not allowed");
+				conn.send(gson.toJson(res));
+				return;
+			}
+			if (tap.getName().length() <= 16) {
+				res = new TAuthServerResponse(-1, "Server name is 16 characters or less");
+				conn.send(gson.toJson(res));
+				return;
+			}
 			dtp.setName(tap.getName());
 			dtp.setMotd(tap.getMotd());
 			dtp.setMax(tap.getMax());
