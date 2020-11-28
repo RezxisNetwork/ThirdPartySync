@@ -97,8 +97,13 @@ public class WSServerHandler implements ServerHandler {
 				conn.send(gson.toJson(res));
 				return;
 			}
-			if (tap.getName().length() <= 16) {
+			if (tap.getName().length() >= 16) {
 				res = new TAuthServerResponse(-1, "Server name is 16 characters or less");
+				conn.send(gson.toJson(res));
+				return;
+			}
+			if (tap.getMotd().length() >= 16) {
+				res = new TAuthServerResponse(-1, "Server motd is 16 characters or less");
 				conn.send(gson.toJson(res));
 				return;
 			}
