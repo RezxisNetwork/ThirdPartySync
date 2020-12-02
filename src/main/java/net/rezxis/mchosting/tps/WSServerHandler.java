@@ -102,11 +102,6 @@ public class WSServerHandler implements ServerHandler {
 				conn.send(gson.toJson(res));
 				return;
 			}
-			if (tap.getMotd().length() >= 32) {
-				res = new TAuthServerResponse(-1, "Server motd is 32 characters or less");
-				conn.send(gson.toJson(res));
-				return;
-			}
 			dtp.setName(tap.getName());
 			dtp.setMotd(tap.getMotd());
 			dtp.setMax(tap.getMax());
